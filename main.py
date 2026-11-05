@@ -5,6 +5,7 @@ app = FastAPI()
 todos = [
     {"id": 1, "title": "FastAPI", "done": False},
     {"id": 2, "title": "Cloud Run", "done": False},
+    {"id": 3, "title": "Git Hub", "done": True},
 ]
 
 @app.get("/")
