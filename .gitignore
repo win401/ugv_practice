@@ -21,3 +21,6 @@ __pycache__/
 # ★ 이게 유출되면 남이 우리 GCP를 마음대로 쓸 수 있음 ~!! 
 *.json.key
 *-key.json
+
+# 로컬 SQLite DB
+*.db
