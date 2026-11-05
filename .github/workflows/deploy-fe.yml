@@ -1,0 +1,46 @@
+name: Deploy FE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "FE/**"
+      - ".github/workflows/deploy-fe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  REGION: us-central1
+  SERVICE: toy-web
+  IMAGE: us-central1-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/cloud-run-source-deploy/actions/toy-web:${{ github.sha }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GCP (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Docker login to Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build
+        run: docker build --build-arg VITE_API_URL=${{ vars.VITE_API_URL }} -t $IMAGE FE
+
+      - name: Push
+        run: docker push $IMAGE
+
+      - name: Deploy
+        run: gcloud run deploy $SERVICE --image $IMAGE --region $REGION --quiet
