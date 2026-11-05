@@ -5,3 +5,4 @@ __pycache__/
 .env
 *.json.key
 *-key.json
+*.db

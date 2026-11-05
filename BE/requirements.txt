@@ -17,6 +17,5 @@ fastapi
 uvicorn[standard]
 
 # --- 3단계(DB 연결)에서 추가할 것들 ---
-# sqlalchemy                  # 파이썬 코드로 DB를 다루게 해주는 라이브러리
-# cloud-sql-python-connector  # Cloud SQL에 안전하게 접속하는 구글 공식 커넥터
-# pg8000                      # PostgreSQL 드라이버
+sqlalchemy                              # 파이썬 코드로 DB를 다루게 해주는 라이브러리
+cloud-sql-python-connector[pymysql]     # Cloud SQL 커넥터 + MySQL 드라이버(pymysql)
