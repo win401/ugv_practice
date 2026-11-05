@@ -19,7 +19,7 @@ function App() {
 
   return (
     <main>
-      <h1>Todos</h1>
+      <h1>sungwoo's todos</h1>
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
