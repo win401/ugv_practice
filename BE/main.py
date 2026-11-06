@@ -35,7 +35,7 @@ def create_db_engine():
         from google.cloud.sql.connector import Connector
 
         # Cloud SQL 공식 커넥터
-        #   - DB를 인터넷(공개 IP)에 열지 않고도 안전하게 접속
+        #   - 승인된 네트워크(IP 허용 목록) 없이도, IAM 권한 + 암호화 연결로 안전하게 접속
         #   - Cloud Run 서비스 계정 권한(Cloud SQL 클라이언트)으로 인증
         connector = Connector()
 
