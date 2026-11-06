@@ -111,6 +111,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://toy-web-s5xoza2y4a-uc.a.run.app",   # 배포된 FE (끝에 / 붙이면 매칭 안 됨!)
+        "https://toy-web-831158706452.us-central1.run.app",   # 같은 FE의 다른 주소 형식
         "http://localhost:5173",                    # 로컬 FE (npm run dev)
     ],
     allow_methods=["*"],   # GET, POST 등 모든 메서드 허용
