@@ -45,7 +45,7 @@ def create_db_engine():
                 instance,
                 "pymysql",                        # MySQL 드라이버 (requirements.txt의 pymysql)
                 user=os.environ["DB_USER"],       # os.environ[...] : 없으면 KeyError로 즉시 실패
-                password=os.environ["DB_PASS"],   # TODO: DB_PASS를 Secret Manager로 주입하도록 변경
+                password=os.environ["DB_PASS"],   # Cloud Run이 Secret Manager(db-password)에서 꺼내 넣어 줌
                 db=os.environ["DB_NAME"],
             )
 
