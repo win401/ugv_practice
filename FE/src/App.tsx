@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DeviceStatus from "./DeviceStatus";
 
 type Todo = {
   id: number;
@@ -20,6 +21,7 @@ function App() {
   return (
     <main>
       <h1>sungwoo's todos</h1>
+      <DeviceStatus apiUrl={API_URL} />
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
