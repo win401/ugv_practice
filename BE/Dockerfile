@@ -1,43 +1,10 @@
-# =============================================================
-# Dockerfile — "이미지를 어떻게 만들지" 적은 레시피
-# -------------------------------------------------------------
-# 이미지   : 코드 + 실행 환경(파이썬, 라이브러리)을 통째로 묶은 것
-# 컨테이너 : 그 이미지를 실제로 실행 중인 상태
-#
-# 흐름: gcloud run deploy --source .
-#   → Cloud Build가 이 Dockerfile을 위에서부터 한 줄씩 실행해서 이미지 생성
-#   → Artifact Registry(창고)에 이미지 저장
-#   → Cloud Run이 이미지를 꺼내서 컨테이너로 실행
-# =============================================================
-
-# 1) 베이스 이미지: 파이썬 3.12가 깔린 가벼운(slim) 리눅스에서 시작
-#    slim = 불필요한 걸 뺀 버전 → 이미지 크기 작음 → 빌드·배포 빠름
-FROM python:3.12-slim
-
-# 2) 컨테이너 안에서 작업할 폴더 지정 (없으면 자동 생성)
-#    이후 명령어들은 전부 /app 폴더 기준으로 실행됨
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn -B package
 
-# 3) 라이브러리 목록 파일만 "먼저" 복사
-#    [왜 코드보다 먼저?] Docker는 줄 단위로 결과를 캐시(재사용)함.
-#    requirements.txt가 안 바뀌면 다음 단계(pip install)를 건너뛰어서
-#    코드만 고쳤을 때 빌드가 훨씬 빨라지기 때문입니다~!
-COPY requirements.txt .
-
-# 4) 라이브러리 설치
-#    --no-cache-dir : 설치 캐시를 안 남겨서 이미지 크기를 줄임
-RUN pip install --no-cache-dir -r requirements.txt
-
-# 5) 나머지 소스코드 전체 복사 (현재 폴더 → 컨테이너의 /app)
-#    [주의] .env나 키 파일이 있으면 이미지에 같이 들어감
-#    실전에선 .dockerignore 파일로 제외하는 게 좋음!
-COPY . .
-
-# 6) 컨테이너가 시작될 때 실행할 명령어
-#    --host 0.0.0.0     : 외부(컨테이너 밖)에서 오는 요청도 받겠다
-#                         (127.0.0.1로 하면 컨테이너 안에서만 접속 가능 → 배포 실패)
-#    --port ${PORT:-8080}: Cloud Run이 넣어주는 PORT 환경변수를 사용,
-#                         값이 없으면 8080 사용
-#    ★ Cloud Run은 정해진 PORT로 응답이 안 오면 "서버가 안 떴다"고 판단해서
-#      배포를 실패시킴. 포트 하드코딩 금지!
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/practice-0.0.1-SNAPSHOT.jar app.jar
+CMD ["java", "-jar", "app.jar"]

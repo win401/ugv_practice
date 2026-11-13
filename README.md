@@ -3,33 +3,23 @@
 GCP 인프라 연습용 프로젝트.
 목표: **깃헙에 push하면 자동 배포되고, DB에서 데이터를 읽고 쓰는 API**
 
-## 파일 구성
+## 백엔드 실행
 
-| 파일 | 역할 |
-|---|---|
-| `main.py` | API 서버 코드 (FastAPI) |
-| `requirements.txt` | 필요한 파이썬 라이브러리 목록 |
-| `Dockerfile` | 이미지를 만드는 레시피 (Cloud Build가 읽음) |
-| `.gitignore` | 깃헙에 올리면 안 되는 파일 목록 |
-| `README.md` | 이 문서. 실행·배포 방법 기록 |
-
-## 로컬 실행
+Java 17과 Maven 3.9 이상이 필요합니다.
 
 ```bash
-# (선택) 가상환경 만들기: 프로젝트마다 라이브러리를 분리해서 설치
-python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # Mac/Linux
-
-# 라이브러리 설치
-pip install -r requirements.txt
-
-# 서버 실행 (--reload: 코드 저장하면 자동 재시작)
-uvicorn main:app --reload
+cd BE
+mvn spring-boot:run
 ```
 
-- http://127.0.0.1:8000 → `{"message":"hello"}` 나오면 성공
-- http://127.0.0.1:8000/docs → API 문서 자동 생성 확인
+`http://localhost:8080`에서 서버를 확인할 수 있습니다. 로컬에서는 `BE/local.db` SQLite 파일을 사용합니다. 기존 SQLite 파일이 있으면 해당 데이터를 사용합니다.
+
+```bash
+cd BE
+mvn test
+```
+
+Cloud Run에서는 기존 `INSTANCE_CONNECTION_NAME`, `DB_USER`, `DB_PASS`, `DB_NAME` 환경 변수를 사용해 Cloud SQL MySQL에 연결합니다.
 
 ## 배포 (1단계: 수동 배포)
 
