@@ -54,6 +54,7 @@ public class SecurityConfig {
                         // 에러가 /error로 다시 전달될 때 막히면 원래 에러 대신 401이 나가므로 열어 둔다.
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers("/health", "/health/db").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/devices/*/status").permitAll()
                         // 운영에서는 Swagger 자체가 꺼져 있어 404가 난다.
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/logout").permitAll()
