@@ -1,0 +1,104 @@
+.topbar {
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  flex: 0 0 var(--topbar-height);
+  padding: 0 32px;
+  /* 사진이 밝은 곳에서도 흰 로고가 보이도록 위쪽만 어둡게 한다. */
+  background: linear-gradient(#18181b8c, #18181b00);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.brand-logo {
+  display: block;
+  height: 56px;
+  width: auto;
+  filter: drop-shadow(0 1px 6px #000000a6);
+}
+.header-end {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 7px 14px;
+  color: var(--on-map);
+  text-shadow: var(--on-map-shadow);
+  border: 1px solid var(--on-map-border);
+  border-radius: 10px;
+  font-size: 11px;
+}
+.demo-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border: 1px solid var(--on-map-border);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.demo-chip > span {
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.header-divider {
+  height: 20px;
+  width: 1px;
+  background: var(--on-map-border);
+}
+.connected,
+.header-battery {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.connected svg {
+  color: var(--on-map-accent);
+}
+.header-battery {
+  gap: 6px;
+}
+.icon-button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border-radius: 9px;
+}
+.icon-button:hover {
+  background: var(--color-background);
+}
+.header-end .icon-button:hover {
+  background: #ffffff33;
+}
+.bell-button {
+  position: relative;
+}
+.bell-button i {
+  position: absolute;
+  right: 5px;
+  top: 4px;
+  width: 5px;
+  height: 5px;
+  background: var(--color-error);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--on-map-border);
+  border-radius: 50%;
+  font-family: Georgia, serif;
+  font-size: 14px;
+}

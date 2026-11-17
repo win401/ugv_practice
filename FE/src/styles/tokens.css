@@ -1,0 +1,108 @@
+:root {
+  font-family:
+    Inter,
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Apple SD Gothic Neo",
+    "Malgun Gothic",
+    sans-serif;
+  color: var(--color-text-primary);
+  background: var(--color-background);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  --color-primary: #245bff;
+  --color-primary-hover: #1746d4;
+  --color-accent: #ff6b35;
+  --color-accent-light: #fff0e9;
+  --color-background: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-text-primary: #18181b;
+  --color-text-secondary: #71717a;
+  --color-border: #e5e5e5;
+  --color-route: #245bff;
+  --color-ugv-position: #ff6b35;
+  --color-success: #16a34a;
+  --color-success-light: #e8f6ed;
+  --color-success-text: #15803d;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3e0;
+  --color-warning-text: #b45309;
+  --color-error: #dc2626;
+  --color-error-light: #fdecec;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  color: inherit;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 4px;
+}
+button {
+  border: 0;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+svg {
+  flex-shrink: 0;
+}
+select {
+  cursor: pointer;
+}
+.app {
+  /* 지도 위에 카드 없이 바로 놓이는 요소의 색. 구역도는 배경이 밝아 어두운 값을 쓴다. */
+  --on-map: #fff;
+  --on-map-muted: #ffffffd9;
+  --on-map-border: #ffffff66;
+  --on-map-accent: #4ade80;
+  --on-map-shadow: 0 1px 6px #000000b3;
+  --topbar-height: 88px;
+  height: 100svh;
+  min-height: 540px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+}
+.app.light-map {
+  --on-map: #18181b;
+  --on-map-muted: #3f3f46;
+  --on-map-border: #18181b59;
+  --on-map-accent: #15803d;
+  --on-map-shadow: none;
+}

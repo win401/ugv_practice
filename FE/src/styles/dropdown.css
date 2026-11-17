@@ -1,0 +1,96 @@
+/* 공용 드롭다운: 흰 카드 + 회색 테두리 + 그림자. 정원 전환과 이력 필터가 함께 쓴다. */
+.dropdown {
+  position: relative;
+}
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 12px;
+  color: #344054;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid var(--color-control-border);
+  border-radius: 8px;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.dropdown-trigger:hover {
+  background: #f9fafb;
+}
+.dropdown-trigger[aria-expanded="true"] {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px #245bff1f;
+}
+.dropdown-chevron {
+  flex-shrink: 0;
+  color: #667085;
+  transition: transform 0.15s;
+}
+[aria-expanded="true"] > .dropdown-chevron {
+  transform: rotate(180deg);
+}
+.dropdown-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 100%;
+  max-height: 260px;
+  overflow: auto;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  color: var(--color-text-primary);
+  text-shadow: none;
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+  box-shadow:
+    0 12px 32px #1018282e,
+    0 2px 6px #1018281a;
+  animation: dropdown-in 0.12s ease-out;
+}
+.dropdown-menu.up {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+.dropdown-menu li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 10px;
+  font-size: 12px;
+  color: #344054;
+  white-space: nowrap;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.dropdown-menu li.active {
+  background: #f3f5f8;
+}
+.dropdown-menu li[aria-selected="true"] {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.dropdown-menu.up {
+  animation-name: dropdown-in-up;
+}
+@keyframes dropdown-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}

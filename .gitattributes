@@ -1,0 +1,10 @@
+# Keep source and documentation consistent with .editorconfig on every OS.
+* text=auto eol=lf
+
+# Windows command entrypoints retain CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary assets must never undergo line-ending conversion.
+*.webp -text
+*.jar -text

@@ -1,0 +1,198 @@
+/* Animate visual feedback, never map coordinates, telemetry or command timing. */
+:root {
+  --motion-feedback: 160ms;
+  --motion-panel: 180ms;
+  --motion-screen: 200ms;
+  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+:is(button, a, input, select, textarea):not(:disabled):not(
+    [aria-disabled="true"]
+  ) {
+  transition:
+    color var(--motion-feedback) var(--motion-ease),
+    background-color var(--motion-feedback) var(--motion-ease),
+    border-color var(--motion-feedback) var(--motion-ease),
+    box-shadow var(--motion-feedback) var(--motion-ease);
+}
+
+/* Keyboard focus remains immediately recognizable. */
+:is(input, textarea):focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+:is(
+  .area-card,
+  .info-device,
+  .detail-zone-row,
+  .zone-row,
+  .metric-card,
+  .detail-zone-letter,
+  .zone-letter,
+  .area-number,
+  .mission-points > li,
+  .dropdown-menu > li
+) {
+  transition:
+    color var(--motion-feedback) var(--motion-ease),
+    background-color var(--motion-feedback) var(--motion-ease),
+    border-color var(--motion-feedback) var(--motion-ease),
+    box-shadow var(--motion-feedback) var(--motion-ease);
+}
+
+/* SVG selection colors can soften without interfering with pointer projection. */
+.map-zone > path {
+  transition:
+    fill var(--motion-feedback) var(--motion-ease),
+    fill-opacity var(--motion-feedback) var(--motion-ease),
+    stroke var(--motion-feedback) var(--motion-ease);
+}
+
+.detail-zone-label > :is(rect, text) {
+  transition: fill var(--motion-feedback) var(--motion-ease);
+}
+
+/* Disabled state takes precedence over selectable-card feedback above. */
+:is(button, a, input, select, textarea, [role="button"]):is(
+  :disabled,
+  [aria-disabled="true"]
+) {
+  transition: none;
+}
+
+.app,
+.login,
+.adm {
+  animation: ui-screen-enter var(--motion-screen) var(--motion-ease);
+}
+
+.panel-body {
+  animation: ui-panel-enter var(--motion-panel) var(--motion-ease);
+}
+
+.panel-footer {
+  animation: ui-screen-enter var(--motion-panel) var(--motion-ease);
+}
+
+/* Opacity only: Leaflet panes and the image-space camera own their transforms. */
+.suncheon-map,
+.detail-garden-map {
+  animation: ui-screen-enter var(--motion-panel) var(--motion-ease);
+}
+
+.notification-panel,
+.confirm-dialog {
+  animation: ui-panel-enter var(--motion-panel) var(--motion-ease);
+}
+
+.confirm-backdrop {
+  animation: ui-screen-enter var(--motion-feedback) var(--motion-ease);
+}
+
+/* Existing dropdown, toast and admin-drawer animations keep their own keyframes. */
+
+/* Safety feedback must not be hidden by an animation on itself or an ancestor. */
+:is(
+  .estop-button,
+  .safety-banner,
+  .safety-alert,
+  .safety-backdrop,
+  .workspace-run-strip,
+  [role="alert"]
+),
+:is(.safety-alert, .safety-banner, .safety-backdrop) *,
+.panel-body:has(
+  .safety-banner,
+  .safety-alert,
+  [role="alert"],
+  .estop-button:not(:disabled)
+),
+.panel-footer:has(.estop-button:not(:disabled)),
+.notification-panel:has(.event-safety),
+.app:has(.safety-alert, .safety-banner, .estop-button:not(:disabled)) {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Measured selection markers move independently of tab content and map state. */
+.tabs.tab-indicator-track,
+.map-workspace .map-mode.tab-indicator-track {
+  position: relative;
+  isolation: isolate;
+}
+
+.map-workspace .map-mode.tab-indicator-track {
+  inset: auto;
+}
+
+.tab-indicator-track > button {
+  position: relative;
+  z-index: 1;
+}
+
+.tab-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: none;
+}
+
+.tab-indicator[data-animate="true"] {
+  transition:
+    transform var(--motion-panel) var(--motion-ease),
+    width var(--motion-panel) var(--motion-ease),
+    height var(--motion-panel) var(--motion-ease);
+}
+
+.tab-indicator-pill {
+  background: var(--color-primary);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px #245bff40;
+}
+
+.tab-indicator-underline {
+  background: var(--color-primary);
+  border-radius: 2px;
+}
+
+.map-mode.tab-indicator-track > button.active {
+  background: transparent;
+  box-shadow: none;
+}
+
+.tabs.tab-indicator-track > button.active::after {
+  content: none;
+}
+
+@keyframes ui-screen-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ui-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
