@@ -54,6 +54,6 @@ jobs:
             --memory 512Mi \
             --min-instances 0 \
             --max-instances 3 \
-            --set-env-vars INSTANCE_CONNECTION_NAME=$DB_INSTANCE,DB_USER=app,DB_NAME=todo_db \
-            --set-secrets DB_PASS=db-password:latest \
+            --set-env-vars SPRING_PROFILES_ACTIVE=prod,CLOUD_SQL_INSTANCE=$DB_INSTANCE,DB_USERNAME=app,DB_NAME=ugv_practice \
+            --set-secrets DB_PASSWORD=db-password:latest,JWT_SECRET=ugv-jwt-secret:latest \
             --quiet
