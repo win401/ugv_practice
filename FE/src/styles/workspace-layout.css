@@ -1,0 +1,590 @@
+/* One alignment system for the map's controls and the existing floating panel. */
+.map-workspace {
+  --topbar-height: 72px;
+  --workspace-edge: 20px;
+  --workspace-gap: 12px;
+  --workspace-panel-width: 400px;
+  --workspace-panel-top: 12px;
+  --workspace-panel-bottom: 20px;
+  --workspace-control-size: 40px;
+  --workspace-panel-padding: 20px;
+  --workspace-shadow: 0 4px 20px #152c421c, 0 1px 4px #152c4214;
+}
+.map-workspace .topbar {
+  position: relative;
+  isolation: isolate;
+  padding: 0 var(--workspace-edge);
+  gap: 16px;
+  background: none;
+}
+/* Keep the existing map shade behind all header controls in its own layer. */
+.map-workspace .topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(#18181b8c, #18181b00);
+  pointer-events: none;
+}
+.map-workspace .topbar > :is(.brand, .header-map-navigation, .header-end) {
+  position: relative;
+  z-index: 1;
+}
+.map-workspace .brand {
+  margin-left: 16px;
+  transform: translateY(8px);
+}
+.map-workspace .brand-logo {
+  height: 60px;
+}
+/* No box behind the header controls; the top shade keeps them readable. */
+.map-workspace .header-end {
+  min-height: 40px;
+  padding: 4px 10px;
+  gap: 12px;
+  border-color: transparent;
+  border-radius: 10px;
+  background: none;
+}
+.map-workspace .panel {
+  top: var(--workspace-panel-top);
+  right: var(--workspace-edge);
+  bottom: var(--workspace-panel-bottom);
+  width: var(--workspace-panel-width);
+  border-radius: 14px;
+  box-shadow: var(--workspace-shadow);
+}
+.map-workspace .header-map-navigation {
+  margin-left: auto;
+  flex: none;
+}
+.map-workspace .header-map-navigation + .header-end {
+  margin-left: 0;
+  flex: none;
+}
+.map-workspace .map-mode {
+  position: static;
+  flex: 0 1 auto;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  background: #fffffff5;
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+  box-shadow: var(--workspace-shadow);
+  color: #182432;
+  text-shadow: none;
+  pointer-events: auto;
+}
+
+.map-workspace .map-mode {
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  padding: 4px;
+  gap: 4px;
+}
+.map-workspace .map-mode button {
+  padding: 0 12px;
+  gap: 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.map-workspace .map-mode svg {
+  width: 14px;
+  height: 14px;
+}
+/* Location text stays clear of the panel, controls and map attribution. */
+.map-workspace .map-location-label {
+  position: absolute;
+  z-index: 4;
+  left: 36px;
+  bottom: var(--workspace-panel-bottom);
+  width: max-content;
+  max-width: min(460px, calc(100% - var(--workspace-panel-width) - 124px));
+  padding: 14px 18px;
+  /* No card behind the text; a stronger shadow keeps it legible on the map. */
+  color: #fff;
+  text-shadow: var(--on-map-shadow);
+  pointer-events: none;
+}
+.map-workspace .map-location-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8de8ad;
+  font-size: 9px;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: 2px;
+}
+.map-workspace .map-location-eyebrow i {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: #49d786;
+  box-shadow: 0 0 0 3px #49d78626;
+}
+.map-workspace .map-location-label h1 {
+  margin: 10px 0 6px;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.9px;
+  text-wrap: balance;
+}
+.map-workspace .map-location-label p {
+  margin: 0;
+  color: #ffffffd9;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.map-workspace .map-controls {
+  top: auto;
+  right: calc(
+    var(--workspace-edge) + var(--workspace-panel-width) + var(--workspace-gap)
+  );
+  bottom: var(--workspace-panel-bottom);
+  z-index: 5;
+  padding: 4px;
+  border-radius: 10px;
+  box-shadow: var(--workspace-shadow);
+}
+.map-workspace .map-controls button {
+  width: var(--workspace-control-size);
+  height: var(--workspace-control-size);
+  border-radius: 6px;
+}
+.map-workspace .map-controls > span {
+  margin: 4px 8px;
+}
+.map-workspace .panel-heading {
+  padding: 16px var(--workspace-panel-padding) 12px;
+  gap: 8px;
+  flex: none;
+  min-height: 58px;
+  font-size: 12px;
+}
+.map-workspace .panel-heading > span:first-child {
+  min-width: 0;
+  letter-spacing: 0;
+  gap: 6px;
+  line-height: 1.5;
+}
+.map-workspace .panel-heading i {
+  flex: none;
+}
+.map-workspace .panel-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.map-workspace .live-tag {
+  padding: 4px 5px;
+  font-size: 7px;
+  letter-spacing: 0.8px;
+}
+.map-workspace .garden-switch {
+  height: 30px;
+  padding: 0 8px;
+  margin: 0;
+  gap: 5px;
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 10px;
+}
+.map-workspace .garden-switch small {
+  font-size: 10px;
+}
+.map-workspace .garden-switch > span {
+  display: inline;
+}
+.map-workspace .garden-switch:focus-visible {
+  outline-color: var(--color-primary);
+}
+.map-workspace .garden-switch-wrap .dropdown-menu {
+  left: auto;
+  right: 0;
+  min-width: 180px;
+  max-width: 260px;
+  max-height: 180px;
+}
+.map-workspace .panel-map-context {
+  flex: none;
+  margin: 0 var(--workspace-panel-padding) 12px;
+}
+.map-workspace .map-summary {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 10px 12px;
+  gap: 12px;
+  border: 1px solid #e8edf4;
+  border-radius: 8px;
+  box-shadow: none;
+  background: #f8faff;
+}
+.map-workspace .summary-icon,
+.map-workspace .tiny-demo {
+  display: none;
+}
+.map-workspace .map-summary > div:not(.summary-rule) {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.map-workspace .map-summary > div > span {
+  margin: 0;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.map-workspace .map-summary strong {
+  font-size: 15px;
+  white-space: nowrap;
+}
+.map-workspace .map-summary strong small {
+  margin-left: 4px;
+  font-size: 9px;
+}
+.map-workspace .summary-rule {
+  flex: none;
+  height: 18px;
+}
+.map-workspace .tabs {
+  padding: 0 12px;
+  gap: 4px;
+}
+.map-workspace .tabs button {
+  min-height: 44px;
+  padding: 10px 2px;
+  font-size: 12px;
+}
+.map-workspace .panel-body {
+  padding: var(--workspace-panel-padding);
+}
+.map-workspace .panel-footer {
+  flex-shrink: 0;
+  padding: 12px var(--workspace-panel-padding);
+}
+.map-workspace .panel-footer .primary-button,
+.map-workspace .panel-footer .secondary-button,
+.map-workspace .panel-footer .stop-button,
+.map-workspace .panel-footer .estop-button {
+  min-height: 40px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.map-workspace .panel-footer p {
+  margin-top: 8px;
+  font-size: 10px;
+  line-height: 1.6;
+  min-height: 0;
+}
+.map-workspace .map-legend {
+  position: static;
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  min-height: 30px;
+  padding: 8px var(--workspace-panel-padding);
+  border: 0;
+  border-top: 1px solid #eef0f3;
+  border-radius: 0;
+  box-shadow: none;
+  background: #fff;
+  font-size: 8px;
+}
+.map-workspace .map-legend .legend-note {
+  font-size: 8px;
+}
+.map-workspace .map-footer {
+  display: none;
+}
+.map-workspace .area-selection-strip {
+  padding: 10px var(--workspace-panel-padding);
+  flex-shrink: 0;
+}
+.map-workspace .area-list {
+  gap: 12px;
+}
+.map-workspace .area-list-heading {
+  margin: 20px 0 12px;
+}
+.map-workspace .area-open {
+  padding: 14px 12px;
+}
+.map-workspace .area-card-actions {
+  padding: 8px 12px;
+}
+.map-workspace .area-panel-intro h2,
+.map-workspace .garden-detail-body > .section-intro h2 {
+  font-size: 20px;
+}
+.map-workspace .area-panel-intro > p {
+  line-height: 1.7;
+}
+.map-workspace .suncheon-map-attribution {
+  font-size: 8px;
+}
+/* 넓은 화면에서는 출처 표시를 정원 이름표 아래, 지도 왼쪽 맨 밑에 둔다.
+   왼쪽은 이름표의 글자 시작 위치(36px + 안쪽 여백 18px)에 맞춘다. */
+@media (min-width: 768px) {
+  .map-workspace .suncheon-map-attribution {
+    left: 54px;
+    bottom: 12px;
+  }
+}
+@media (min-width: 1550px) {
+  .map-workspace {
+    --workspace-panel-width: 420px;
+    --workspace-edge: 24px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1100px) {
+  .map-workspace {
+    --workspace-panel-width: 340px;
+    --workspace-edge: 16px;
+    --workspace-panel-padding: 16px;
+  }
+  .map-workspace .map-mode button {
+    padding: 0 9px;
+    font-size: 10px;
+  }
+
+  .map-workspace .topbar {
+    gap: 12px;
+  }
+  .map-workspace .header-end {
+    gap: 8px;
+  }
+  .map-workspace .header-end .demo-chip {
+    display: none;
+  }
+  .map-workspace .panel-heading .live-tag {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .map-workspace {
+    --topbar-height: 112px;
+    --workspace-edge: 12px;
+    --workspace-panel-top: 8px;
+    --workspace-panel-bottom: 12px;
+    --workspace-panel-padding: 16px;
+    --workspace-control-size: 36px;
+    --workspace-mobile-panel-height: 52%;
+    min-height: 540px;
+  }
+  .map-workspace .brand {
+    margin-left: 4px;
+    transform: translateY(4px);
+  }
+  .map-workspace .brand-logo {
+    height: 44px;
+  }
+  .map-workspace .header-end {
+    padding: 4px 6px;
+    gap: 6px;
+    min-height: 36px;
+  }
+  .map-workspace .topbar .avatar {
+    display: grid;
+    width: 26px;
+    height: 26px;
+    font-size: 11px;
+  }
+  .map-workspace .header-end .view-as select {
+    max-width: 112px;
+    font-size: 10px;
+  }
+  .map-workspace .demo-chip {
+    display: none;
+  }
+  /* Preserve the original logo/menu row; map navigation gets its own clear row. */
+  .map-workspace .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 64px 40px;
+    column-gap: 8px;
+    row-gap: 0;
+    padding-bottom: 8px;
+  }
+  .map-workspace .brand {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  .map-workspace .header-end {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+  .map-workspace .header-map-navigation {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
+    margin-left: 0;
+  }
+  .map-workspace .map-mode {
+    height: 40px;
+    border-radius: 8px;
+  }
+
+  .map-workspace .map-mode {
+    gap: 2px;
+    padding: 3px;
+  }
+  .map-workspace .map-mode button {
+    padding: 0 8px;
+    gap: 4px;
+    font-size: 10px;
+  }
+  .map-workspace .map-mode svg {
+    width: 12px;
+    height: 12px;
+  }
+  .map-workspace .map-location-label {
+    left: 16px;
+    bottom: calc(
+      var(--workspace-mobile-panel-height) + var(--workspace-panel-bottom) +
+        76px
+    );
+    max-width: min(320px, calc(100% - 32px));
+    padding: 10px 12px;
+  }
+  .map-workspace .map-location-label h1 {
+    margin-top: 7px;
+    margin-bottom: 3px;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+  }
+  .map-workspace .map-location-label p {
+    font-size: 10px;
+  }
+  .map-workspace .map-location-eyebrow {
+    gap: 6px;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+  .map-workspace .map-controls {
+    display: flex;
+    align-items: center;
+    right: var(--workspace-edge);
+    bottom: calc(
+      var(--workspace-mobile-panel-height) + var(--workspace-panel-bottom) +
+        var(--workspace-gap)
+    );
+    padding: 3px;
+    border-radius: 8px;
+  }
+  .map-workspace .panel {
+    top: auto;
+    left: var(--workspace-edge);
+    width: auto;
+    height: var(--workspace-mobile-panel-height);
+  }
+  .map-workspace .panel-heading {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    min-height: 44px;
+    font-size: 11px;
+  }
+  .map-workspace .panel-heading .live-tag,
+  .map-workspace .panel-map-context {
+    display: none;
+  }
+  .map-workspace .garden-switch {
+    height: 28px;
+    font-size: 10px;
+  }
+  .map-workspace .tabs button {
+    min-height: 40px;
+    font-size: 11px;
+  }
+  .map-workspace .panel-footer {
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+  .map-workspace .map-legend {
+    min-height: 24px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    gap: 6px 10px;
+    font-size: 7px;
+  }
+  .map-workspace .map-legend .legend-note {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .map-workspace .map-controls > span {
+    width: 1px;
+    height: 20px;
+    margin: 0 4px;
+  }
+}
+@media (max-width: 380px) {
+  .map-workspace {
+    --workspace-control-size: 32px;
+  }
+  .map-workspace .header-end .view-as select {
+    max-width: 76px;
+  }
+  .map-workspace .topbar {
+    column-gap: 8px;
+    row-gap: 0;
+  }
+  .map-workspace .brand-logo {
+    height: 40px;
+  }
+  .map-workspace .header-end {
+    gap: 4px;
+    padding: 3px 4px;
+  }
+}
+
+/* The selector lives at the top of a clipped panel; always open into its body. */
+.map-workspace .panel-tools .dropdown-menu.up {
+  top: calc(100% + 6px);
+  bottom: auto;
+  animation-name: dropdown-in;
+}
+
+.map-workspace .detail-zone-copy small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Keep the place name visible when the existing app minimum height exceeds
+   a short landscape viewport. The panel's own layout is unchanged. */
+@media (min-width: 768px) and (max-height: 539px) {
+  .map-workspace .map-location-label {
+    position: fixed;
+  }
+}
+
+.garden-detail-example-badge {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--topbar-height) + 10px);
+  left: clamp(12px, 3vw, 36px);
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: #fffffff0;
+  color: #33463b;
+  font-size: 10px;
+  pointer-events: none;
+}

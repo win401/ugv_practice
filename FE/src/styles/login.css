@@ -1,0 +1,268 @@
+/* 로그인 화면과 고객 화면의 계정 메뉴·안내 화면 */
+.login {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  background:
+    linear-gradient(#18181bb3, #18181bd9),
+    url("../assets/garden-aerial.webp") center / cover;
+}
+.login-card {
+  width: min(400px, 100%);
+  padding: 32px 28px 26px;
+  background: var(--color-surface);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px #00000059;
+  --color-control-border: #d0d5dd;
+}
+.login-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  margin-bottom: 22px;
+}
+.login-card h1 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+}
+.login-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+.login-card form {
+  margin-top: 22px;
+}
+.login-card label {
+  display: block;
+  margin-bottom: 12px;
+}
+.login-card label > span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475467;
+}
+.login-card input {
+  width: 100%;
+  padding: 11px 12px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  background: #ffffff;
+  border: 1px solid var(--color-control-border);
+  border-radius: 8px;
+}
+.login-card input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+.password-field {
+  position: relative;
+}
+.password-field input {
+  padding-right: 44px;
+}
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: #667085;
+  background: transparent;
+  border-radius: 6px;
+}
+.password-toggle:hover {
+  color: var(--color-text-primary);
+  background: #f3f5f8;
+}
+.password-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+.login-problem {
+  min-height: 18px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
+}
+.login-card .primary-button {
+  width: 100%;
+  font-size: 14px;
+}
+.login-demo {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+.login-demo h2 {
+  font-size: 12px;
+  font-weight: 650;
+}
+.login-demo p {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+.login-demo ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.login-demo li button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 9px 12px;
+  text-align: left;
+  background: #f9fafb;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+.login-demo li button:hover {
+  background: #f3f5f8;
+}
+.login-demo strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.login-demo small {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+/* 고객 화면 헤더의 계정 메뉴 */
+.account {
+  position: relative;
+}
+button.avatar {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+button.avatar:hover {
+  background: #ffffff26;
+}
+.account-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 40;
+  min-width: 200px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--color-text-primary);
+  text-shadow: none;
+  background: #ffffff;
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+  box-shadow:
+    0 12px 32px #1018282e,
+    0 2px 6px #1018281a;
+}
+.account-menu strong {
+  font-size: 13px;
+}
+.account-menu small {
+  font-size: 11px;
+  color: #475467;
+}
+.account-menu button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f3f5f8;
+  border-radius: 7px;
+}
+.account-menu button:hover {
+  background: #e8ebf0;
+}
+.connected.off svg {
+  color: #fca5a5;
+}
+
+/* 불러오는 중·오류 안내 */
+.screen-message {
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  padding: 16px;
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+  text-align: center;
+}
+.screen-message .secondary-button {
+  padding: 10px 16px;
+}
+.first-garden-intro {
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+/* 등록한 위치가 있는 정원의 정보 탭: 관수 구역이 아직 없다는 빈 상태 */
+.registered-garden-empty {
+  margin-top: 18px;
+  padding: 14px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  border: 1px dashed var(--color-border);
+  border-radius: 12px;
+}
+
+/* 관리자가 운영 화면에서 볼 고객 고르기 */
+.view-as {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 4px 4px 10px;
+  border: 1px solid var(--on-map-border);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.view-as select {
+  padding: 3px 6px;
+  font: inherit;
+  font-size: 11px;
+  color: var(--color-text-primary);
+  background: #ffffff;
+  border: 0;
+  border-radius: 4px;
+}
+.adm-nav-foot a.adm-to-ops {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 9px 10px;
+  font-size: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+@media (max-width: 767px) {
+  .view-as > span {
+    display: none;
+  }
+}

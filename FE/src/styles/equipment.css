@@ -1,0 +1,99 @@
+.vehicle-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 212px;
+  background: radial-gradient(
+    ellipse,
+    var(--color-background) 0,
+    transparent 65%
+  );
+  margin-top: 3px;
+}
+.vehicle {
+  width: 245px;
+  position: relative;
+  z-index: 1;
+}
+.vehicle-orbit {
+  position: absolute;
+  width: 230px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  transform: rotate(-10deg);
+  bottom: 32px;
+}
+.vehicle-orbit:after {
+  content: "";
+  position: absolute;
+  inset: -15px;
+  border: 1px dashed var(--color-border);
+  border-radius: 50%;
+}
+.device-heading {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.device-heading strong {
+  font-size: 19px;
+  letter-spacing: 0.6px;
+}
+.device-heading > span {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+.metric-card > strong.text-metric {
+  font-weight: 650;
+  font-size: 18px;
+  margin-top: 16px;
+}
+.detail-card {
+  margin-top: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  padding: 17px;
+  background: var(--color-surface);
+}
+.detail-card h3 {
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.detail-card > div {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--color-divider);
+}
+.detail-card > div > span {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+.detail-card strong {
+  font-size: 11px;
+  text-align: right;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+.demo-explanation {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-control-border);
+  padding: 13px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+}
+.demo-explanation svg {
+  margin-top: 1px;
+  color: var(--color-text-secondary);
+}

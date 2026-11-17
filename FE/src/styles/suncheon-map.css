@@ -1,0 +1,355 @@
+.suncheon-map {
+  --suncheon-free-x: 24px;
+  --suncheon-free-y: 120px;
+  --suncheon-free-w: calc(100% - 520px);
+  --suncheon-free-h: calc(100% - 260px);
+  --suncheon-credit-bottom: 80px;
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  overflow: hidden;
+  background: #dce6dd;
+}
+.suncheon-map-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: #dce6dd;
+  font-family: inherit;
+}
+.suncheon-map-canvas:focus-visible {
+  outline: 3px solid #245bff;
+  outline-offset: -3px;
+}
+.suncheon-map[data-status="missing-key"] {
+  background:
+    radial-gradient(ellipse at 28% 32%, #e7f0df, transparent 60%),
+    linear-gradient(135deg, #cbd9cc, #e4ebe0);
+}
+.suncheon-map[data-status="missing-key"] .suncheon-map-canvas {
+  background: transparent;
+}
+.suncheon-map-state {
+  position: absolute;
+  z-index: 500;
+  left: calc(var(--suncheon-free-x) + var(--suncheon-free-w) / 2);
+  top: calc(var(--suncheon-free-y) + var(--suncheon-free-h) / 2);
+  transform: translate(-50%, -50%);
+  width: min(380px, calc(var(--suncheon-free-w) - 20px));
+  padding: 27px;
+  border: 1px solid #ffffff;
+  border-radius: 18px;
+  background: #fffffff5;
+  box-shadow: 0 10px 40px #25412d1f;
+  color: #18251c;
+  text-align: center;
+}
+.suncheon-map-state-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 17px;
+  border-radius: 15px;
+  color: #245bff;
+  background: #edf2ff;
+}
+.suncheon-map-eyebrow {
+  font-size: 8px;
+  letter-spacing: 1.3px;
+  color: #65806d;
+}
+.suncheon-map-state h2 {
+  margin: 10px 0;
+  font-size: 19px;
+  letter-spacing: -0.6px;
+}
+.suncheon-map-state > p:last-of-type {
+  font-size: 12px;
+  line-height: 1.85;
+  color: #647168;
+  word-break: keep-all;
+}
+.suncheon-map-state-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.suncheon-map-state-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 13px;
+  border: 1px solid #d9e0db;
+  border-radius: 8px;
+  background: #fff;
+  color: #33493a;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.suncheon-map-state-actions .suncheon-map-primary {
+  background: #245bff;
+  border-color: #245bff;
+  color: #fff;
+}
+.suncheon-map-state-actions button:hover {
+  filter: brightness(0.95);
+}
+.suncheon-map-notice {
+  position: absolute;
+  z-index: 500;
+  left: calc(var(--suncheon-free-x) + 10px);
+  top: calc(var(--suncheon-free-y) + 8px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(var(--suncheon-free-w) - 20px);
+  padding: 11px 13px;
+  background: #fffffff2;
+  border: 1px solid #fff;
+  border-radius: 9px;
+  box-shadow: 0 3px 14px #1c30251a;
+  color: #495e50;
+  font-size: 11px;
+}
+.suncheon-map-notice > svg {
+  flex-shrink: 0;
+}
+.suncheon-map-notice button {
+  padding: 2px;
+  background: transparent;
+  color: #245bff;
+  font: inherit;
+  white-space: nowrap;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.suncheon-map-attribution {
+  position: absolute;
+  z-index: 500;
+  left: var(--suncheon-free-x);
+  bottom: var(--suncheon-credit-bottom);
+  /* 배경 상자 없이 글자만 둔다. */
+  color: #263b2e;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.suncheon-map-attribution a {
+  color: inherit;
+  text-decoration: none;
+}
+.suncheon-map-attribution a:hover {
+  text-decoration: underline;
+}
+.suncheon-map button:focus-visible,
+.suncheon-map a:focus-visible {
+  outline: 3px solid #245bff;
+  outline-offset: 3px;
+}
+/* 타일을 받는 동안 지도 맨 위에 보이는 얇은 진행 막대. 지도 조작을 가리지 않는다. */
+.suncheon-map-loading {
+  position: absolute;
+  z-index: 600;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  overflow: hidden;
+  background: #ffffff40;
+  pointer-events: none;
+}
+.suncheon-map-loading > span {
+  display: block;
+  width: 35%;
+  height: 100%;
+  background: #245bff;
+  border-radius: 2px;
+  animation: suncheon-loading 1.1s ease-in-out infinite;
+}
+@keyframes suncheon-loading {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(290%);
+  }
+}
+.suncheon-map.is-drawing .suncheon-map-canvas,
+.suncheon-map.is-drawing .leaflet-interactive {
+  cursor: crosshair;
+}
+.suncheon-area-boundary {
+  transition:
+    fill-opacity 0.15s,
+    stroke 0.15s;
+}
+.suncheon-area-boundary.leaflet-interactive:hover {
+  fill-opacity: 0.22;
+}
+.suncheon-area-boundary:focus-visible {
+  outline: none;
+  stroke: #ffd76b;
+  stroke-width: 4px;
+}
+.suncheon-area-label-icon,
+.suncheon-draft-point-icon {
+  border: 0;
+  background: transparent;
+}
+.suncheon-area-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 220px;
+  padding: 8px 12px;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ffffff;
+  border-radius: 999px;
+  background: #fffffff5;
+  color: #182432;
+  box-shadow: 0 3px 12px #152c4233;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.suncheon-area-label > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.suncheon-area-label > small {
+  flex: 0 0 auto;
+  padding: 3px 5px;
+  border-radius: 4px;
+  color: #586778;
+  background: #eaf0f5;
+  font-size: 8px;
+  font-weight: 550;
+}
+.suncheon-area-label.is-selected {
+  border-color: #245bff;
+  background: #245bff;
+  color: #fff;
+}
+.suncheon-area-label.is-selected > small {
+  color: #fff;
+  background: #ffffff26;
+}
+.suncheon-area-label:not(.is-static):hover {
+  box-shadow: 0 4px 15px #172c484d;
+}
+.suncheon-area-label.is-static {
+  cursor: inherit;
+  pointer-events: none;
+}
+.suncheon-area-label.is-compact {
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  max-width: none;
+  padding: 0;
+  transform: translate(calc(-50% + var(--suncheon-label-nudge, 0px)), -135%);
+  border-color: #245bff;
+  color: #245bff;
+  font-size: 10px;
+  font-weight: 750;
+}
+.suncheon-area-label.is-compact.is-selected {
+  color: #fff;
+}
+.suncheon-area-label.is-offset-left {
+  transform: translate(calc(-100% - 12px), -50%);
+}
+.suncheon-area-label.is-offset-right {
+  transform: translate(12px, -50%);
+}
+.suncheon-area-label.is-offset-top {
+  transform: translate(-50%, calc(-100% - 14px));
+}
+.suncheon-draft-point {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #245bff;
+  color: #fff;
+  box-shadow: 0 2px 8px #172c4840;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  pointer-events: none;
+}
+@media (max-width: 767px) {
+  .overview-map-active .demo-chip {
+    display: none;
+  }
+  .suncheon-map {
+    --suncheon-free-w: calc(100% - 28px);
+    --suncheon-free-h: 230px;
+  }
+  .suncheon-map-state {
+    padding: 15px 19px;
+    border-radius: 12px;
+  }
+  .suncheon-map-state-icon {
+    width: 33px;
+    height: 33px;
+    margin-bottom: 7px;
+    border-radius: 10px;
+  }
+  .suncheon-map-state-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .suncheon-map-eyebrow {
+    display: none;
+  }
+  .suncheon-map-state h2 {
+    margin: 6px 0;
+    font-size: 16px;
+  }
+  .suncheon-map-state > p:last-of-type {
+    font-size: 10px;
+    line-height: 1.65;
+  }
+  .suncheon-map-state-actions {
+    margin-top: 12px;
+  }
+  .suncheon-map-state-actions button {
+    padding: 8px 11px;
+    font-size: 10px;
+  }
+  .suncheon-map-notice {
+    font-size: 10px;
+    padding: 9px 11px;
+  }
+  .suncheon-map-attribution {
+    font-size: 8px;
+  }
+  .suncheon-area-label {
+    max-width: 160px;
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* 움직임을 줄이는 설정에서는 막대를 가득 채워 멈춘 채로 보여 준다. */
+  .suncheon-map-loading > span {
+    width: 100%;
+    opacity: 0.7;
+    animation: none;
+  }
+  .suncheon-area-boundary {
+    transition: none;
+  }
+}

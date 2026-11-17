@@ -1,0 +1,384 @@
+.mission-progress-card {
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow-card);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+.mission-progress-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.mission-progress-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #edf2ff;
+  color: #245bff;
+}
+.mission-progress-heading > div {
+  min-width: 0;
+}
+.mission-progress-heading p {
+  color: #667085;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.mission-progress-heading h3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: 3px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+.mission-progress-meta {
+  display: grid;
+  gap: 7px;
+  margin: 14px 0 12px;
+}
+.mission-progress-meta > div {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+.mission-progress-meta dt {
+  color: #667085;
+}
+.mission-progress-meta dd {
+  margin: 0;
+  min-width: 0;
+  font-weight: 600;
+}
+.mission-progress-status {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  background: #f2f4f7;
+  color: #475467;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.mission-progress-status i {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+}
+.mission-progress-status[data-state="moving"] {
+  color: #c65327;
+  background: #fff0e9;
+}
+.mission-progress-status[data-state="watering"] {
+  color: #245bff;
+  background: #edf2ff;
+}
+.mission-progress-status[data-state="paused"] {
+  color: #986900;
+  background: #fff7e0;
+}
+.mission-progress-status[data-state="done"] {
+  color: #187441;
+  background: #edf8f0;
+}
+.mission-progress-position {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 0;
+  margin-top: 3px;
+}
+.mission-progress-position > svg {
+  color: #667085;
+  margin-top: 2px;
+}
+.mission-progress-position > div {
+  min-width: 0;
+}
+.mission-progress-position span {
+  display: block;
+  color: #667085;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.mission-progress-position strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.65;
+  font-weight: 600;
+}
+.mission-progress-overall {
+  border-top: 1px solid var(--color-divider);
+  padding-top: 13px;
+}
+.mission-progress-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.mission-progress-total > span {
+  font-size: 12px;
+  font-weight: 650;
+}
+.mission-progress-total > strong {
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -1px;
+  color: #245bff;
+  font-variant-numeric: tabular-nums;
+}
+.mission-progress-total small {
+  margin-left: 2px;
+  font-size: 17px;
+  letter-spacing: 0;
+}
+.mission-progress-track {
+  height: 6px;
+  overflow: hidden;
+  margin-top: 10px;
+  border-radius: 6px;
+  background: #edf0f5;
+}
+.mission-progress-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #245bff;
+  transition: width 180ms ease-out;
+}
+.mission-progress-caption {
+  margin-top: 7px;
+  color: #667085;
+  font-size: 10px;
+  line-height: 1.7;
+}
+.mission-progress-caption strong {
+  font-weight: 600;
+  color: #475467;
+}
+.mission-progress-water {
+  margin-top: 14px;
+  padding: 11px 12px;
+  border: 1px solid #e6ecfa;
+  border-radius: 9px;
+  background: #f8faff;
+}
+.mission-progress-water-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 5px;
+  row-gap: 5px;
+  color: #475467;
+  font-size: 10px;
+}
+.mission-progress-water-heading > svg {
+  color: #245bff;
+}
+.mission-progress-water-heading > strong {
+  margin-left: auto;
+  color: #245bff;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.mission-progress-water-heading strong small {
+  font-size: 10px;
+  color: #667085;
+  font-weight: 500;
+}
+.mission-progress-water > p {
+  margin-top: 5px;
+  font-size: 11px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+.mission-progress-water-track {
+  height: 4px;
+  margin-top: 8px;
+}
+.mission-progress-water-note {
+  display: block;
+  margin-top: 7px;
+  color: #667085;
+  font-size: 9px;
+  line-height: 1.7;
+}
+.mission-progress-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+.mission-progress-list-heading h4 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 650;
+}
+.mission-progress-list-heading > span {
+  color: #98a2b3;
+  font-size: 10px;
+}
+.mission-progress-stops {
+  list-style: none;
+  padding: 0;
+  margin: 9px 0 14px;
+}
+.mission-progress-stop {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+  min-height: 50px;
+  padding: 7px 0;
+}
+.mission-progress-stop:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: calc(50% + 11px);
+  bottom: calc(-50% + 11px);
+  left: 10px;
+  border-left: 1px dashed #d0d9ec;
+}
+.mission-progress-point-number {
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 21px;
+  height: 21px;
+  border: 1px solid #d0d9ec;
+  border-radius: 50%;
+  background: #f8fafc;
+  color: #667085;
+  font-size: 9px;
+  font-weight: 650;
+}
+.mission-progress-point-copy {
+  min-width: 0;
+  flex: 1;
+}
+.mission-progress-point-copy strong {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.55;
+  font-weight: 550;
+}
+.mission-progress-point-copy small {
+  display: block;
+  color: #98a2b3;
+  margin-top: 3px;
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+}
+.mission-progress-point-status {
+  flex: none;
+  max-width: 82px;
+  text-align: right;
+  font-size: 9px;
+  line-height: 1.5;
+  color: #667085;
+}
+.mission-progress-stop[data-point-state="done"] .mission-progress-point-number {
+  color: #187441;
+  background: #edf8f0;
+  border-color: #b8dfc5;
+}
+.mission-progress-stop[data-point-state="done"] .mission-progress-point-status {
+  color: #187441;
+}
+.mission-progress-stop[data-point-state="current"]
+  .mission-progress-point-number {
+  color: #fff;
+  background: #245bff;
+  border-color: #245bff;
+}
+.mission-progress-stop[data-point-state="current"]
+  .mission-progress-point-copy
+  strong {
+  color: #245bff;
+  font-weight: 700;
+}
+.mission-progress-card:is([data-status="paused"], [data-status="stopped"])
+  .mission-progress-stop[data-point-state="current"]
+  .mission-progress-point-number {
+  background: #667085;
+  border-color: #667085;
+}
+.mission-progress-stop:is(
+    [data-point-state="unknown"],
+    [data-point-state="failed"]
+  )
+  .mission-progress-point-number {
+  background: #f2f4f7;
+  border-color: #98a2b3;
+}
+.mission-progress-report {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-divider);
+  color: #667085;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.mission-progress-report strong {
+  margin-left: auto;
+  color: #475467;
+  font-size: 9px;
+  font-weight: 600;
+}
+.mission-progress-card:is(
+    [data-status="paused"],
+    [data-status="stopped"],
+    [data-status="unknown"]
+  )
+  .mission-progress-track
+  > span {
+  transition: none;
+}
+@media (max-width: 420px) {
+  .mission-progress-card {
+    padding: 14px;
+  }
+  .mission-progress-heading h3 {
+    font-size: 13px;
+  }
+  .mission-progress-water {
+    padding: 10px;
+  }
+  .mission-progress-point-status {
+    max-width: 70px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mission-progress-track > span {
+    transition: none;
+  }
+}

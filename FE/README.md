@@ -1,75 +1,163 @@
-# React + TypeScript + Vite
+# 정원 관수 UGV 프론트엔드
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React · Vite · TypeScript 기반 대시보드다. 운영자(정원주인) 화면, 관리자(개발자) 화면, 로그인으로 이루어진다. 시연 계정의 데이터는 브라우저 안의 가상 서버(`src/api/mock.ts`)가, 그 외 계정의 데이터는 백엔드가 다룬다([실제 서버 연동](#실제-서버-연동)). 실제 장비로 명령하지 않는다. 전체 지도는 V-world 위성 타일을 외부에서 불러온다.
 
-Currently, two official plugins are available:
+## 실행
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Node.js 24와 npm을 사용한다. 저장소 루트에서 `FE` 폴더로 이동한 뒤 실행한다.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cd FE
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+<http://127.0.0.1:5174/>에 접속한다. 서버 실행과 함께 브라우저를 자동으로 열려면 `npm run dev -- --open`을 사용한다. 기본 포트가 사용 중이면 오류로 종료된다. 필요하면 `npm run dev -- --port 5175`로 다른 포트를 지정한다. 운영 시연과 정원 상세는 API·DB 없이 실행할 수 있다. 실제 전체 지도는 `FE/.env.local`의 `VITE_VWORLD_API_KEY`가 필요하다. [지도 키 설정과 확인 방법](docs/vworld-map.md)을 참고한다.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 화면과 시연 계정
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| 경로     | 화면                                          | 들어갈 수 있는 계정 |
+| -------- | --------------------------------------------- | ------------------- |
+| `/login` | 로그인                                        | 누구나              |
+| `/`      | 운영자 화면 (내 정원·장비·관수)               | 운영자, 관리자      |
+| `/admin` | 관리자 화면 (고객·정원·장비 관리, 시뮬레이션) | 관리자              |
 
+로그인하지 않으면 `/login`으로, 권한이 없는 화면에 들어가면 자기 화면으로 이동한다. 로그인하면 누구나 운영자 화면에서 시작하고, 관리자는 계정 메뉴의 "관리자 페이지"와 관리자 화면의 "운영 화면으로"로 두 화면을 오간다. 시연 계정은 로그인 화면에 있다 (관리자 `admin@saemgil.dev` / `admin1234`, 운영자 `garden.kim@example.com` / `demo1234`). 모두 가상 서버의 예시 계정이다.
+
+화면 이동은 `react-router`를 쓴다(`src/main.tsx`의 `createBrowserRouter`). 운영자 화면과 관리자 화면 사이는 페이지를 새로 불러오지 않고 옮기고, 로그인·로그아웃처럼 사용자가 바뀌는 이동은 페이지를 새로 불러와 앞사람의 데이터를 비운다.
+
+운영자 화면에 저장하지 않은 미션·구역 편집이 있으면 화면을 떠나기 전에 확인 창을 띄운다. "관리자 페이지" 버튼과 브라우저의 뒤로가기·앞으로가기는 라우터의 이동 막기(`useBlocker`)가, 새로고침과 창 닫기는 브라우저의 나가기 경고가 맡는다.
+
+백엔드가 꺼져 있어도 로그인 화면은 나온다. 화면을 열 때 서버에 로그인 여부를 묻는데, 서버에 닿지 못하면 로그인하지 않은 것으로 본다. 그래서 백엔드 없이 화면만 띄워도 시연 계정으로 들어갈 수 있다. 실제 계정은 로그인을 시도할 때 연결 오류가 나온다.
+
+로그인은 탭마다 따로 유지된다. 한 탭은 관리자, 다른 탭은 운영자로 열어 두면 관리자 화면에서 바꾼 장비 상태·정원 승인·장비 배정이 운영자 화면에 바로 반영되는 것을 볼 수 있다.
+
+## 검증과 빌드
+
+```bash
+npm run format:check
+npm run build
+```
+
+build는 TypeScript 검사 후 Vite로 dist/를 생성한다. `npm run format`은 코드를 Prettier로 정리한다. 빌드 결과를 로컬에서 보려면 `npm run preview` 후 터미널에 표시되는 주소를 연다.
+
+## 배포 (Cloud Run)
+
+`main`에 반영되면 `Dockerfile`로 nginx 이미지를 만들어 Cloud Run `saemgil-web`에 배포한다. nginx는 빌드 결과(dist)를 서빙하고, `/api` 요청은 백엔드(`saemgil-api`)로 넘긴다(`nginx.conf.template`). 브라우저 입장에서는 같은 주소라 CORS가 필요 없고 로그인 쿠키도 그대로 오간다. 백엔드 주소는 배포 때 `API_UPSTREAM` 환경변수로 들어간다.
+
+배포 워크플로는 Secret Manager의 `vworld-api-key/latest`를 읽어 FE 빌드에 전달한다. 2026-11-12 회사 프로젝트에서 버전 1 사용 설정과 배포 계정의 시크릿 단위 읽기 권한을 확인했다. 실제 배포와 배포 주소의 지도 표시는 별도 확인한다. [등록·권한·키 전달 안내](docs/vworld-map.md#secret-manager에서-빌드-키-전달--2026-11-12)를 따른다.
+
+이미지를 로컬에서 확인하려면 백엔드 주소를 함께 넘긴다. 아래 명령은 지도 키 없이 빌드하므로 상세 이미지 시안은 볼 수 있고 실제 위성지도는 키 설정이 필요하다.
+
+```bash
+docker build -t saemgil-web:local .
+docker run --rm -p 8090:8080 -e API_UPSTREAM=http://host.docker.internal:8080 saemgil-web:local
+```
+
+## 실제 서버 연동
+
+로그인한 계정에 따라 데이터가 갈린다. 화면 단위가 아니라 계정 단위다.
+
+- **시연 계정**(가상 데이터에 있는 계정): 브라우저 가상 데이터. 운영자 화면과 관리자 화면 모두 해당한다. 서버를 부르지 않는다.
+- **그 외 계정**: 백엔드. 로컬 화면은 로컬 DB를, 배포 화면은 운영 DB를 쓴다.
+
+로컬에서 실제 서버를 시험하려면 백엔드를 켜고(`BE` 폴더에서 `./gradlew bootRun`) 로컬 시험 계정으로 로그인한다. 관리자 `ops-admin@saemgil.dev` / `admin1234`, 운영자 `wind.jung@example.com` / `demo1234`. 계정과 시험 데이터는 [BE README](../BE/README.md#로컬-시험-데이터)에 있다. 운영 DB에는 이 계정들이 없다.
+
+실제 계정에서 서버에 저장되는 것:
+
+- 관리자 화면: 계정(추가·수정·정지·삭제), 장비(등록·수정·회수), 정원(등록·수정·장비 배정·소유권 이전).
+- 정원 등록: 주소를 검색해 위성지도를 옮기고, 지도에 경계를 그려 위경도로 저장한다. 닫은 뒤에는 점을 끌어 옮기고, 선 위에 점을 더하고, 선을 곡선으로 바꿀 수 있다. 면적은 경계로 계산한다. 주소 검색은 백엔드에 V-world 키(`BE/.env`의 `SAEMGIL_VWORLD_API_KEY`)가 있어야 하고, 없으면 지도를 직접 옮겨 등록한다.
+- 정원 수정·삭제(실제 계정): 정원 관리 목록의 관리 칸에서 연필을 누르거나 옆 창의 정보 수정을 누르면, 목록 대신 값과 경계가 채워진 정원 수정 화면이 열린다. 변경 취소는 고친 내용만 되돌리고, 목록으로 버튼이나 저장으로 목록에 돌아간다. 경계를 고치면 수정 전 경계가 흰 점선으로 남고 면적을 다시 계산한다. 휴지통은 연결된 장비를 알려 주고 한 번 더 물은 뒤 지운다. 시연 계정은 옆 창의 정보 수정만 쓴다.
+- 운영자 화면: 운영 정원 목록(최근 등록순), 정원 이름·주소·면적, 배정 장비와 그 상태.
+
+등록 위치가 있는 정원(실제 정원)을 고르면 운영자 화면의 지도가 그 정원 기준으로 바뀐다.
+
+- 전체 지도: 그 정원의 위치로 이동하고 그 정원의 경계만 그린다. 순천만 시연용 구역 A~X, 예시 경계, 장비 표시는 그리지 않는다.
+- 정원 상세: 순천만 예시 그림 대신 위성지도에서 그 정원만 크게, 보기 전용으로 보여 준다.
+- 왼쪽 아래 이름표: 그 정원의 이름과 주소.
+- "정원 전체 보기" 버튼은 그 정원에 지도를 맞추고, "UGV 위치 보기" 버튼은 잠긴다(장비의 실제 위치를 아직 모른다).
+- 정보 탭: 순천만 구역 목록 대신 정원 정보와 배정 장비를 보여 준다.
+
+받아 둔 정원 데이터가 있으면, 뒤에서 하는 재확인이 실패해도 운영자 화면을 그대로 둔다. 화면을 오류로 바꾸면 편집 중이던 내용이 사라지기 때문이다.
+
+실제 계정에서도 서버에 저장되지 않는 것(아직 구현하지 않음). 이 항목들은 작업을 시작하지 않았으므로 맡아서 고쳐도 된다. 시연 계정의 화면 동작과 가상 서버 파일(`mock.ts`, `seed.ts`)은 이번 연동에서 바꾸지 않았다.
+
+- 관수 구역 A~X와 그 편집, 추가 정원 경계, 미션: 그 브라우저에만 저장된다. 다른 PC나 다른 브라우저에서는 보이지 않는다. 자료는 순천만국가정원 기준의 시연용이라 등록한 정원의 위치와 맞지 않는다.
+- 관수 실행: 실제 계정은 시작할 수 없다("관수 실행은 장비 연동 후 제공됩니다."). 시연 계정의 진행은 브라우저 타이머가 만드는 가상 진행이다.
+- 이력: 실제 계정은 항상 비어 있다.
+- 실제 정원의 정보 탭에는 "이 정원의 관수 구역은 아직 등록되지 않았습니다."가 나온다. 미션 탭은 순천만 구역 기준 그대로 열린다.
+- 장비 탭의 값: 서버에 저장된 값을 한 번 읽는다. 실제 장비가 보낸 값이 아니고 실시간으로 바뀌지 않는다.
+- 등록한 정원의 경계 수정, 정원 상세의 지도 표시.
+- 관리자 화면의 시뮬레이션 메뉴는 실제 계정에도 보인다. 거기서 바꾼 장비 값은 DB에 그대로 들어간다. "전체 데이터 초기화"는 실제 계정에서 거절된다.
+
+서버에서 받는 데이터는 React Query로 관리한다(`src/api/queryClient.ts`). 규칙은 [개발 규칙](docs/guidelines.md)에, 함수와 경로는 [API 계약](docs/api.md)에 있다.
+
+## 가상 데이터와 동작
+
+아래는 시연 계정(가상 데이터) 기준이다.
+
+- `src/api/seed.ts`: 시연 계정·정원·장비·초기 이력. `src/api/mock.ts`: 이 데이터를 다루는 가상 서버와 권한 검사. 계약은 [API 계약](docs/api.md).
+- `src/hooks/useIrrigationSimulation.ts`: 진행률·경과 시간·상태 변화. 작업 시작·종료는 API로 알린다.
+- 시연 기준일은 **2026.11.04**다. 데이터는 브라우저 `localStorage`에 저장되어 새로고침해도 유지된다. 처음 상태로 되돌리려면 관리자 화면의 시뮬레이션 → 전체 데이터 초기화를 쓴다.
+- 처음에는 장미 정원을 관수 중인 장면이다. ‘완료 장면 보기 · 데모’로 즉시 완료 상태와 이력 반영을 볼 수 있다.
+- 정원은 장미·초화·잔디 3곳이며 같은 항공사진에 표시된다. 정원을 전환하면 지도 구역과 정보·관수 작업·이력이 그 정원 기준으로 바뀌고, 작업 중에도 전환할 수 있다.
+- 관수 작업 탭의 `등록`으로 이름·주소·식재·면적을 입력하고 지도에 구역을 그려 정원을 추가한다. 새 정원은 승인 대기 상태이며, 관리자가 승인하고 장비를 배정해야 관수할 수 있다. 정원이 하나도 없는 운영자는 첫 화면에서 바로 등록한다.
+- 이력의 ‘최근 7일’은 초기 시연 기록과 그 뒤 추가된 기록을 보여준다.
+- 장비 외형·물 잔량·사용량·경로는 화면 제안이며 실제 사양이나 자율주행 기능의 확정이 아니다.
+- 정원 상세의 배경은 `src/assets/suncheon-garden-detail-wide.webp`다. 전체 지도는 생성 사진을 올리지 않고 위성지도를 그대로 보여준다. 정원 상세의 이미지 주소·크기(1536 × 1024)·개정 번호는 `src/lib/gardenImage.ts`에서 관리한다.
+- 이전 배경에 맞췄던 기본 운영 정원 3개의 경계·경로는 API 응답에서 새 이미지 좌표로 변환한다(`src/api/operatingGardenGeometry.ts`). 저장된 운영 가상 DB와 직접 그린 사용자 경계는 자동 변경하지 않는다. 이전 이미지에서 만든 사용자 경계는 새 이미지에 맞는지 별도로 확인해야 한다.
+- 로그인 배경에서 사용하는 `src/assets/garden-aerial.webp`(원본을 가로 1920px로 줄여 WebP로 변환)의 출처: [Bellevue Botanical Park aerial, April 2023](https://commons.wikimedia.org/wiki/File:Bellevue_Botanical_Park_aerial,_April_2023.png), Wikimedia Commons, CC0. 현재 정원 상세·미션 편집의 배경으로 사용하지 않는다.
+
+## 화면 구성
+
+**지도 보기 방식과 운영 패널은 독립적이다.** 전체 지도/정원 상세를 전환해도 정보·관수 작업·미션·장비·이력의 5개 탭은 항상 표시한다. 두 화면은 선택한 관수 구역과 장비 보고 및 미션 진행 상태를 공유한다. 미션 초안은 전체 지도에서 계속 편집할 수 있다.
+
+| 역할                                            | 파일                                       |
+| ----------------------------------------------- | ------------------------------------------ |
+| 데이터·탭·지도·미션 상태 연결                   | `src/views/WorkspaceView.tsx`              |
+| 공통 5개 탭·정원 전환·요약·작업 명령            | `src/views/WorkspacePanel.tsx`             |
+| 미션 위치·완료율·지점별 결과 표시               | `src/components/MissionProgressCard.tsx`   |
+| 헤더의 전체 지도/상세 전환 탭                   | `src/components/WorkspaceMapTabs.tsx`      |
+| 지도 확대·축소·전체보기·UGV 위치 버튼           | `src/components/WorkspaceMapToolbar.tsx`   |
+| 구역 경계 또는 상세 이름표와 UGV 그리기         | `src/components/GardenMapScene.tsx`        |
+| 상세 화면의 확대·이동                           | `src/components/GardenDetailMap.tsx`       |
+| 구역·경로·UGV만 Leaflet 위에 표시               | `src/components/GeographicGardenLayer.tsx` |
+| 두 지도에 전달할 하나의 UGV 위치·방향·경로 상태 | `src/hooks/useWorkspaceGardenScene.ts`     |
+
+768px 이상은 오른쪽 패널, 미만은 하단 패널이다. 본문만 스크롤하고 작업 버튼은 하단에 유지한다. 전체 지도/정원 상세 탭은 최상단 헤더의 오른쪽 메뉴 왼편에, 정원 이름과 위치는 좌측 하단의 반투명 안내 상자에 배치했다. 좁은 화면에서는 지도 탭을 헤더 두 번째 줄에 배치한다. 좌측 상단 로고는 크기를 키우고 안쪽으로 옮겼으며 운영 정원 전환·선택 구역 요약·범례는 패널 안에 모았다. 확대·축소 버튼은 데스크톱에서 패널 옆, 모바일에서 패널 위에 배치한다. 오른쪽 상단 메뉴와 위치 카드는 같은 회색 반투명 배경(`rgba(173, 173, 173, 0.68)`, 8px 흐림)을 쓴다. 헤더의 그라데이션은 별도 배경층에 두고 로고·지도 탭·메뉴를 그 위에 표시한다. 공통 간격과 크기는 `src/styles/workspace-layout.css`에서 관리한다.
+
+[개발 규칙](docs/guidelines.md) · [전체 구조](../docs/architecture.md) · [백엔드 계획](../BE/README.md)
+
+## 전체 지도 / 정원 상세
+
+**전체 지도**의 V-world 위성영상 위에서 관수 구역 선택·추가·경계 편집과 미션 지점 편집을 한다. 저장한 경계의 기준은 위도·경도다. 기존 예시 경계는 위성지도 위에서 확인하고 보정할 수 있다.
+
+**정원 상세**는 생성 이미지 위에 구역 이름표, 파란 예정 경로, 주황 지나온 경로와 UGV를 표시한다. 경계선과 편집 도구는 전체 지도에서 제공한다. 가상 장비 보고에 맞춰 UGV 위치를 부드럽게 갱신하며 일시정지·종료·안전정지·통신 끊김·미확인 상태에서 표시 위치를 유지한다.
+
+기존 원형·장미·산책 정원 예시 경계 3개는 공통 24개 구역과 중복되지 않도록 화면에서 숨겼다. 저장 자료는 삭제하지 않았다. 별도로 직접 그린 경계는 **전체 지도 → 정보 → 추가 정원 경계 관리**에서 관리하고 지도 위치를 확인한다. [정원 구역 지정 안내](docs/garden-areas.md)를 참고한다.
+
+정원 상세 배경 `suncheon-garden-detail-wide.webp`는 주변 정원과 산책로까지 넓혀 생성한 이미지다. 실제 출력은 1536 × 1024이며, 픽셀 해상도를 늘린 것이 아니라 더 넓은 풍경을 담았다. 사진과 표식은 함께 확대·이동하며 움직이지 않는 중복 사진을 사용하지 않는다. 이미지 끝까지 이동하면 패널 주변에 녹색 바탕이 드러날 수 있다.
+
+[공유 지도와 UGV 구조](docs/garden-detail.md) · [V-world 지도 연결](docs/vworld-map.md) · [추가 경계 관리](docs/garden-areas.md)
+
+2026-11-12: 빌드·서식 검사와 독립 브라우저의 지도/탭 분리, 공유 UGV, 미션 편집·저장, 모바일 핀치, 추가 경계 관리 검증을 통과했다.
+
+### UGV 이동과 확인창
+
+UGV는 천천히 연속 이동하고, 관수 지점에서 파란색으로 바뀌며 차체 기준 왼쪽·오른쪽 분사와 검은 상태 말풍선을 표시한다. 이동 문구 옆에는 주황색 점, 관수 문구 옆에는 파란색 점을 표시한다. 말풍선 내부 문구와 폭도 부드럽게 바뀐다. 방향·시간은 가상 데이터다. 앱 안의 미저장 이탈·삭제 확인은 자체 팝업을 사용한다. [구조와 검증 기록](docs/garden-detail.md#연속-이동좌우-관수-표시--2026-11-12)을 참고한다.
+
+탭 내용은 짧게 페이드·이동하고 상단 선택 배경과 하단 밑줄도 선택한 탭으로 이동한다. 버튼·카드·팝업과 지도 확대·축소에 일관된 전환을 적용했다. 지도 좌표·명령 처리와 시각 효과를 분리했으며 시스템의 ‘움직임 줄이기’ 설정을 따른다. [전환 효과와 배치](docs/garden-detail.md#전환-효과와-배치--2026-11-12)를 참고한다.
+
+미션 회차가 실행 중이면 정보 탭에 **미션 진행 현황**이 표시된다. 작업 정원·장비, 현재 위치 또는 이동 구간, 완료 지점 기준 전체 완료율, 현재 지점의 관수 시간과 지점별 결과를 확인할 수 있다. 전체 완료율은 `완료 지점 / 전체 지점`이며 지도 경로 이동률과 다르다. 종료 결과는 구역 선택으로 돌아가기 전까지 유지하며 일시정지·통신 끊김·조기 종료를 완료로 표시하지 않는다. 여전히 가상 장비 보고를 이용한 시연이다. [진행 카드 설명](docs/garden-detail.md#미션-진행-정보--2026-11-12).
+
+두 지도는 정원 상세의 기본 이미지 배율과 중심점을 공유한다. 첫 진입과 ‘정원 전체 보기’에서 유사한 배율과 중심점을 사용한다. 상세 확대는 1~8배, 전체 지도 화면 확대는 최대 23단계이며 확대 버튼은 두 지도 모두 약 25%씩 확대한다. 위성 타일 요청은 기존 최대 19단계로 유지하고 그 이상의 화면 확대는 원본 타일을 늘려 표시한다. 사진의 실제 해상도가 높아지는 것은 아니며 생성 이미지와 실제 정원의 측량 정합을 의미하지 않는다.
+
+### 관수 구역 편집과 저장
+
+**전체 지도 → 정보**에서 새 구역을 그리거나 연필 버튼으로 이름·경계를 수정한다. **점 선택(V) / 점 추가(P) / 곡선(C)** 도구와 실행 취소·다시 실행을 지원한다. 경계는 위도·경도로 브라우저에 저장하며, **GeoJSON 내보내기**로 내려받을 수 있다. [구역 편집 사용법](docs/garden-zone-editing.md) · [저장 구조](docs/garden-zone-api.md)
+
+```bash
+node --test tests/gardenZoneEdits.test.cjs tests/zoneGeometryGeoJson.test.cjs
+npm run format:check
+npm run build
 ```

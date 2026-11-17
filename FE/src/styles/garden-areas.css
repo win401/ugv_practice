@@ -1,0 +1,314 @@
+.garden-areas-body {
+  padding: 27px;
+}
+.area-panel-intro > .eyebrow {
+  color: #6b7b96;
+  font-size: 9px;
+  letter-spacing: 1.3px;
+}
+.area-panel-intro h2 {
+  margin: 11px 0 10px;
+  font-size: 23px;
+  letter-spacing: -0.7px;
+}
+.area-panel-intro > p {
+  color: #6d7890;
+  font-size: 12px;
+  line-height: 1.9;
+  word-break: keep-all;
+}
+.area-list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 25px 0 12px;
+}
+.area-list-heading h3 {
+  font-size: 13px;
+}
+.area-list-heading h3 span {
+  color: #2e5cff;
+  font-size: 11px;
+  margin-left: 6px;
+}
+.area-list-heading > span {
+  color: #8893a4;
+  font-size: 9px;
+}
+.area-list {
+  display: grid;
+  gap: 11px;
+}
+.area-card {
+  border: 1px solid #dfe4ed;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 2px 3px #17203008;
+  overflow: hidden;
+}
+.area-card.selected {
+  border-color: #7795ff;
+}
+.area-open {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.area-open:hover {
+  background: #f5f8ff;
+}
+.area-number {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  flex: none;
+  color: #2d59ff;
+  background: #edf2ff;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.area-copy {
+  flex: 1;
+  min-width: 0;
+}
+.area-copy strong {
+  display: block;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.area-copy small {
+  display: block;
+  margin-top: 6px;
+  font-size: 9px;
+  color: #7d879a;
+  line-height: 1.6;
+}
+.area-open > svg {
+  color: #7185a4;
+  flex: none;
+}
+.area-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 14px;
+  border-top: 1px solid #eef1f6;
+}
+.area-card-actions button {
+  font-size: 10px;
+  gap: 4px;
+}
+.area-help {
+  font-size: 10px;
+  line-height: 1.85;
+  color: #8892a4;
+  margin-top: 18px;
+  word-break: keep-all;
+}
+.area-empty {
+  padding: 24px;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #d4dce9;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: #7e899b;
+}
+.area-error {
+  font-size: 12px;
+  line-height: 1.7;
+  padding: 12px 14px;
+  background: #fff3f1;
+  color: #af372d;
+  border-radius: 9px;
+  margin: 15px 0;
+}
+.area-draw-form {
+  margin-top: 23px;
+}
+.area-draw-form > label {
+  display: block;
+  font-size: 12px;
+  font-weight: 650;
+  margin-bottom: 9px;
+}
+.area-draw-form input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #dbe1ec;
+  border-radius: 8px;
+  padding: 12px 13px;
+  background: white;
+  font: inherit;
+  font-size: 13px;
+}
+.area-draw-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid #dce5ff;
+  border-radius: 12px;
+  background: #f5f8ff;
+}
+.area-draw-count strong {
+  font-size: 27px;
+  color: #315bff;
+}
+.area-draw-count small {
+  font-size: 11px;
+  color: #73829b;
+  font-weight: 400;
+}
+.area-draw-count > span {
+  font-size: 10px;
+  color: #73829b;
+}
+.area-draw-steps {
+  padding-left: 20px;
+  margin: 18px 0;
+  color: #6d7890;
+  font-size: 12px;
+  line-height: 2.2;
+}
+.area-edit-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.area-edit-actions .secondary-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px;
+  font-size: 11px;
+}
+.area-panel-footer .primary-button {
+  width: 100%;
+  justify-content: center;
+}
+.area-panel-footer .action-row .secondary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 11px 15px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.area-panel-footer p {
+  line-height: 1.7;
+  font-size: 10px;
+  min-height: 18px;
+}
+.area-back {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 22px;
+  font-size: 11px;
+}
+.area-detail-card {
+  background: white;
+  border: 1px solid #dfe4ed;
+  border-radius: 14px;
+  padding: 22px;
+  margin: 24px 0;
+}
+.area-detail-card > svg {
+  color: #315bff;
+}
+.area-detail-card h3 {
+  font-size: 14px;
+  margin: 12px 0;
+}
+.area-detail-card dl > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-top: 1px solid #eef0f6;
+  font-size: 12px;
+}
+.area-detail-card dt {
+  color: #7d889b;
+}
+.area-detail-card dd {
+  font-weight: 600;
+}
+.area-selection-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 25px;
+  background: #f8faff;
+  border-bottom: 1px solid #e2e8f1;
+}
+.area-selection-strip strong {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.area-selection-strip button {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.area-open:focus-visible {
+  outline: 3px solid #315bff;
+  outline-offset: -3px;
+}
+@media (max-width: 767px) {
+  .garden-areas-body {
+    padding: 17px;
+  }
+  .area-panel-intro h2 {
+    font-size: 20px;
+  }
+  .area-panel-intro > p {
+    font-size: 11px;
+  }
+  .area-list-heading {
+    margin-top: 18px;
+  }
+  .area-open {
+    padding: 12px;
+  }
+  .area-copy strong {
+    font-size: 12px;
+  }
+  .area-selection-strip {
+    padding: 10px 17px;
+  }
+  .area-panel-footer {
+    padding: 11px 16px;
+  }
+}
+
+.area-operating-info {
+  margin-top: 22px;
+  border-top: 1px solid #dfe4ed;
+  padding-top: 16px;
+}
+.area-operating-info > summary {
+  cursor: pointer;
+  color: #66758d;
+  font-size: 12px;
+  font-weight: 600;
+}
+.area-operating-info > div {
+  padding-top: 20px;
+}
+
+.area-safety-action {
+  margin-top: 9px;
+}

@@ -1,0 +1,129 @@
+.notification-panel {
+  position: absolute;
+  z-index: 50;
+  top: 76px;
+  right: 42px;
+  width: 334px;
+  border-radius: 10px;
+  background: var(--color-surface);
+  box-shadow: 0 15px 70px #18181b25;
+  border: 1px solid var(--color-border);
+  padding: 20px;
+}
+.notification-panel > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.notification-panel h3 {
+  font-size: 14px;
+  margin-right: auto;
+}
+.text-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  color: var(--color-text-secondary);
+  font-size: 9px;
+  padding: 0;
+}
+.notification-panel article {
+  padding: 15px 0;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid var(--color-border);
+}
+.notification-panel article > span {
+  display: grid;
+  place-items: center;
+  height: 34px;
+  width: 34px;
+  border-radius: 9px;
+  background: var(--color-background);
+  color: var(--color-primary);
+}
+.notification-panel article strong {
+  font-size: 11px;
+  font-weight: 550;
+}
+.notification-panel article p {
+  font-size: 9px;
+  color: var(--color-text-secondary);
+  margin-top: 7px;
+}
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-text-primary);
+  color: var(--color-surface);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 15px 22px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px #18181b30;
+  max-width: calc(100% - 32px);
+  width: max-content;
+  animation: toast-in 0.2s ease-out;
+}
+.toast svg {
+  color: var(--color-surface);
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: #18181b55;
+  backdrop-filter: blur(5px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.modal {
+  width: 370px;
+  max-width: 100%;
+  padding: 30px;
+  background: var(--color-surface);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px #18181b33;
+  text-align: center;
+}
+.modal-icon {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 20px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--color-warning-light);
+  color: var(--color-warning-text);
+}
+.modal h2 {
+  font-size: 19px;
+  letter-spacing: -0.5px;
+}
+.modal p {
+  font-size: 11px;
+  line-height: 1.9;
+  color: var(--color-text-secondary);
+  margin: 13px 0 25px;
+}
+.modal > div {
+  display: flex;
+  gap: 10px;
+}
+.secondary-button {
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  flex: 1;
+}
+.secondary-button:hover {
+  background: var(--color-border);
+}

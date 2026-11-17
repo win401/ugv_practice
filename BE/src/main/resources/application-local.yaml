@@ -1,0 +1,26 @@
+# 로컬 개발: BE/compose.yaml로 띄운 MySQL에 접속한다.
+# 값은 BE/.env(커밋 금지)에 있으면 그 값을, 없으면 로컬 전용 기본값을 쓴다. 예시는 BE/.env.example 참고.
+#
+# bootRun에서는 spring-boot-docker-compose가 compose.yaml의 컨테이너를 띄우고 접속 정보를 컨테이너에서 직접 읽으므로
+# 아래 datasource 값은 쓰이지 않는다. Docker 자동 실행을 끄거나(spring.docker.compose.enabled=false)
+# 빌드한 jar로 실행할 때를 위한 값이다.
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    # localhost 대신 127.0.0.1: IPv6(::1)로 다른 MySQL에 붙는 경우를 피한다.
+    url: jdbc:mysql://127.0.0.1:${SAEMGIL_DB_PORT:3307}/saemgil
+    username: app_user
+    password: ${SAEMGIL_DB_PASSWORD:saemgil-local}
+  # 로컬에서만 시연 계정(FE 로그인 화면의 예시 계정)을 넣는다. 운영·테스트에는 넣지 않는다.
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed-local
+
+# 로그인 토큰 서명 키. 운영은 JWT_SECRET이지만, 로컬은 다른 프로젝트의 OS 환경변수와 겹치지 않게 SAEMGIL_ 이름을 쓴다.
+# 기본값은 로컬 전용이다. 이 파일(local 프로필)은 운영에서 읽지 않는다.
+app:
+  auth:
+    jwt-secret: ${SAEMGIL_JWT_SECRET:local-only-jwt-secret-not-for-production-0123}
+  # 주소 검색용 V-world 키. FE/.env.local의 VITE_VWORLD_API_KEY와 같은 키를 BE/.env에 넣는다. 없으면 주소 검색만 꺼진다.
+  vworld:
+    api-key: ${SAEMGIL_VWORLD_API_KEY:}

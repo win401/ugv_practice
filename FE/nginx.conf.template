@@ -1,8 +1,42 @@
+# 컨테이너가 시작할 때 nginx 이미지가 ${API_UPSTREAM} 같은 환경변수를 실제 값으로 바꿔 conf.d/default.conf로 만든다.
+# ($uri 같은 nginx 변수는 환경변수가 아니라서 그대로 남는다.)
 server {
-    listen ${PORT};
-    root /usr/share/nginx/html;
+  listen 8080;
+  server_name _;
 
-    location / {
-        try_files $uri /index.html;
-    }
+  root /usr/share/nginx/html;
+  index index.html;
+
+  # 응답을 gzip으로 압축한다(nginx 기본값은 꺼짐). HTML은 켜기만 하면 압축된다.
+  # gzip_proxied any: Cloud Run 앞단(Google 프런트엔드)을 거쳐 온 요청에도 압축한다. 없으면 압축되지 않을 수 있다.
+  gzip on;
+  gzip_vary on;
+  gzip_proxied any;
+  gzip_types text/css application/javascript application/json application/problem+json image/svg+xml;
+
+  # index.html은 배포마다 바뀌므로 캐시하지 않음
+  location = /index.html {
+    add_header Cache-Control "no-cache";
+    try_files $uri =404;
+  }
+
+  # 빌드 파일은 이름에 해시가 붙어 있어 오래 캐시해도 안전
+  location /assets/ {
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    try_files $uri =404;
+  }
+
+  # /api 요청은 BE(Cloud Run saemgil-api)로 넘긴다. 브라우저 입장에서는 같은 주소라 CORS가 필요 없고 로그인 쿠키도 그대로 오간다.
+  # BE 주소는 deploy-fe.yml이 API_UPSTREAM 환경변수로 넣는다.
+  location /api/ {
+    proxy_pass ${API_UPSTREAM};
+    # Cloud Run은 HTTPS 접속 시 이름(SNI)으로 서비스를 찾으므로 BE 주소의 이름을 함께 보낸다.
+    proxy_ssl_server_name on;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
+
+  # 그 외 경로는 SPA라서 index.html로
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
 }

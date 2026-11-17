@@ -25,7 +25,18 @@ __pycache__/
 # 로컬 SQLite DB
 *.db
 
-# Maven build output
-BE/target/
-
-.maven-cache/
+# Frontend, Gradle and local runtime files
+node_modules/
+dist/
+*.tsbuildinfo
+.gradle/
+build/
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+service-account*.json
+.local/
+.vite/

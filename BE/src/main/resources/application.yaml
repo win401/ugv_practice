@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: saemgil
+  # 프로필을 지정하지 않고 실행하면 로컬 설정(application-local.yaml)을 쓴다.
+  profiles:
+    default: local
+
+  datasource:
+    hikari:
+      # DB가 응답하지 않을 때 요청이 오래 붙잡히지 않도록 연결 대기 시간을 줄인다(기본 30초).
+      connection-timeout: 5000
+      # db-f1-micro는 작은 인스턴스라 Cloud Run 인스턴스당 연결 수를 적게 둔다.
+      maximum-pool-size: 5
+
+  jpa:
+    open-in-view: false
+    # 테이블은 Flyway(db/migration)가 서버 시작 때 만든다. Hibernate는 엔티티와 테이블이 맞는지 검사만 한다.
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        # 서버 시간대와 관계없이 DB에는 한국 시간으로 저장하고 읽는다.
+        jdbc:
+          time_zone: Asia/Seoul
+
+  # JSON 응답의 날짜도 한국 시간으로 내보낸다 (Jackson 기본값은 UTC).
+  jackson:
+    time-zone: Asia/Seoul
+
+# Cloud Run이 넘겨주는 PORT를 쓰고, 없으면 로컬 기본값 8080을 쓴다.
+server:
+  port: ${PORT:8080}
+
+# 로그인 토큰(JWT)과 쿠키. 비밀키는 로컬 .env, 운영 Secret Manager에서 넣는다.
+app:
+  auth:
+    jwt-secret: ${JWT_SECRET}
+    # 이 시간이 지나면 다시 로그인한다. 정지·역할 변경은 요청마다 DB를 확인해 바로 반영된다.
+    token-validity: 8h
+    # HTTPS에서만 쿠키를 보낸다. 로컬(http://localhost)은 끄고 운영(application-prod.yaml)은 켠다.
+    cookie-secure: false
+  # 정원 등록 화면의 주소 검색(V-world)을 서버가 대신 부를 때 쓰는 키.
+  # 비어 있으면 주소 검색만 꺼지고(503 안내), 나머지 기능은 그대로 동작한다.
+  vworld:
+    api-key: ${VWORLD_API_KEY:}

@@ -1,0 +1,19 @@
+# 운영(Cloud Run): Cloud SQL 커넥터로 IAM 인증해 접속한다. 공개 IP를 직접 열지 않는다.
+# 값은 deploy-be.yml의 환경변수와 Secret Manager(비밀번호)에서 주입된다.
+spring:
+  datasource:
+    # cloudSqlRefreshStrategy=lazy: 요청이 없을 때 CPU가 줄어드는 Cloud Run에서 인증서를 필요할 때만 갱신한다.
+    url: jdbc:mysql:///${DB_NAME}?cloudSqlInstance=${CLOUD_SQL_INSTANCE}&socketFactory=com.google.cloud.sql.mysql.SocketFactory&cloudSqlRefreshStrategy=lazy
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+# 운영에서는 API 구조가 외부에 드러나지 않도록 API 문서와 시험 화면을 끈다.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+app:
+  auth:
+    cookie-secure: true

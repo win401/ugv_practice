@@ -1,10 +1,9 @@
-# 이미지에 넣지 않을 파일 (Dockerfile의 COPY . . 에서 제외됨)
-.git
-.venv/
-__pycache__/
+.gradle
+build
+.idea
+*.iml
+.DS_Store
+.gitignore
+.gitattributes
+README.md
 .env
-*.json.key
-*-key.json
-*.db
-
-target/

@@ -1,0 +1,73 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.1.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.tbcrew'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// 테이블 생성, 변경은 Flyway가 db/migration의 SQL 파일로 순서대로 적용한다.
+	implementation 'org.springframework.boot:spring-boot-starter-flyway'
+	// 컨트롤러를 읽어 API 문서(/v3/api-docs)와 시험 화면(/swagger-ui.html)을 만든다. 운영에서는 끈다.
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.0'
+	// 로그인·권한 검사. 요청이 컨트롤러에 닿기 전에 필터에서 토큰과 역할을 확인한다.
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 로그인 토큰(JWT) 발급·검증
+	implementation 'io.jsonwebtoken:jjwt-api:0.13.0'
+	// 요청 값 검사(@NotBlank, @Size 등). 새로 만드는 API의 요청 record에 붙여 쓴다.
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// getter와 생성자를 컴파일할 때 만들어 준다. 두 줄이 모두 있어야 동작한다.
+	// 엔티티에는 @Getter만 쓰고 @Setter·@Data는 쓰지 않는다(README의 코드 규칙 참고).
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// MySQL 드라이버와 Cloud SQL 커넥터 (운영에서 IAM으로 Cloud SQL에 접속)
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	// Flyway가 MySQL을 다루기 위한 모듈
+	runtimeOnly 'org.flywaydb:flyway-mysql'
+	runtimeOnly 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.30.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.13.0'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.13.0'
+
+	// 로컬 bootRun 때 compose.yaml의 MySQL을 자동으로 띄우고 접속 정보를 컨테이너에서 읽는다.
+	// developmentOnly라 배포용 jar와 테스트에는 들어가지 않는다.
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+	// 로컬 bootRun 중에 코드가 다시 컴파일되면 서버를 자동으로 재시작한다. 배포용 jar와 테스트에는 들어가지 않는다.
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	// 테스트는 Docker로 실제 MySQL 8.4를 띄워서 운영과 같은 DB에서 실행한다.
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+	testImplementation 'org.testcontainers:testcontainers-mysql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	// 로컬 설정(.env, localhost MySQL)을 읽지 않도록 test 프로필로 실행한다. DB는 Testcontainers가 띄운다.
+	systemProperty 'spring.profiles.active', 'test'
+	// 개발 PC의 시간대와 관계없이 운영(Cloud Run)과 같은 한국 시간으로 실행한다.
+	systemProperty 'user.timezone', 'Asia/Seoul'
+}
+
+tasks.named('bootRun') {
+	// 개발 PC의 시간대와 관계없이 운영(Cloud Run)과 같은 한국 시간으로 실행한다.
+	systemProperty 'user.timezone', 'Asia/Seoul'
+}

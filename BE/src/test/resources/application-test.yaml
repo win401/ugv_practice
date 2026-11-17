@@ -1,0 +1,4 @@
+# 테스트 전용 값. 로컬·운영 비밀키와 다르다.
+app:
+  auth:
+    jwt-secret: test-only-jwt-secret-0123456789abcdef0123
